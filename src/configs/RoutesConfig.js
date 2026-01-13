@@ -43,56 +43,20 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/farm/details/:id/*`,
         component: React.lazy(() => import('views/app-views/apps/accounts/details/farmdetails')),
     },
+    
     {
-        key: 'apps.chat',
-        path: `${APP_PREFIX_PATH}/apps/chat/*`,
-        component: React.lazy(() => import('views/app-views/apps/chat')),
+        key: 'apps.production',
+        path: `${APP_PREFIX_PATH}/apps/production/dashboard`,
+        component: React.lazy(() => import('views/app-views/apps/production')),
     },
     {
-        key: 'apps.calendar',
-        path: `${APP_PREFIX_PATH}/apps/calendar`,
-        component: React.lazy(() => import('views/app-views/apps/calendar')),
+        key: 'apps.production.record',
+        path: `${APP_PREFIX_PATH}/apps/production/record`,
+        component: React.lazy(() => import('views/app-views/apps/production/record')),
     },
-    {
-        key: 'apps.project',
-        path: `${APP_PREFIX_PATH}/apps/project`,
-        component: React.lazy(() => import('views/app-views/apps/project')),
-    },
-    {
-        key: 'apps.project.list',
-        path: `${APP_PREFIX_PATH}/apps/project/list`,
-        component: React.lazy(() => import('views/app-views/apps/project/project-list/ProjectList')),
-    },
-    {
-        key: 'apps.project.scrumboard',
-        path: `${APP_PREFIX_PATH}/apps/project/scrumboard`,
-        component: React.lazy(() => import('views/app-views/apps/project/scrumboard')),
-    },
-    {
-        key: 'apps.ecommerce',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce`,
-        component: React.lazy(() => import('views/app-views/apps/e-commerce')),
-    },
-    {
-        key: 'apps.ecommerce.add-product',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/add-product`,
-        component: React.lazy(() => import('views/app-views/apps/e-commerce/add-product')),
-    },
-    {
-        key: 'apps.ecommerce.edit-product',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/edit-product/:id`,
-        component: React.lazy(() => import('views/app-views/apps/e-commerce/edit-product')),
-    },
-    {
-        key: 'apps.ecommerce.product-list',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/product-list`,
-        component: React.lazy(() => import('views/app-views/apps/e-commerce/product-list')),
-    },
-    {
-        key: 'apps.ecommerce.orders',
-        path: `${APP_PREFIX_PATH}/apps/ecommerce/orders`,
-        component: React.lazy(() => import('views/app-views/apps/e-commerce/orders')),
-    },
+    
+
+
     {
         key: 'components.general',
         path: `${APP_PREFIX_PATH}/components/general`,

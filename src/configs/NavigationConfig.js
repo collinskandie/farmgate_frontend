@@ -53,25 +53,25 @@ const useNavigationConfig = () => {
                 breadcrumb: false,
                 submenu: []
               },
-              {
-                key: 'apps-farms-details',
-                path: `${APP_PREFIX_PATH}/apps/mail/inbox`,
-                title: 'sidenav.apps.farms-details',
-                breadcrumb: false,
-                submenu: []
-              },
+              // {
+              //   key: 'apps-farms-details',
+              //   path: `${APP_PREFIX_PATH}/apps/mail/inbox`,
+              //   title: 'sidenav.apps.farms-details',
+              //   breadcrumb: false,
+              //   submenu: []
+              // },
             ]
           },
           {
             key: 'apps-production',
             path: `${APP_PREFIX_PATH}/apps/chat`,
             title: 'sidenav.apps.production',
-            // icon: MessageOutlined,
+        
             breadcrumb: false,
             submenu: [
               {
                 key: 'apps-production-milk',
-                path: `${APP_PREFIX_PATH}/apps/farms/list`,
+                path: `${APP_PREFIX_PATH}/apps/production/dashboard`,
                 title: 'sidenav.apps.milk-production',
                 breadcrumb: false,
                 submenu: []

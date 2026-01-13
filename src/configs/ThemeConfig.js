@@ -22,7 +22,7 @@ export function rgba(hex, opacity = 1) {
 
 export const baseTheme = {
     borderRadius: 10,
-    colorPrimary: THEME_COLOR.BLUE,
+    colorPrimary: THEME_COLOR.GREEN,
     colorSuccess: THEME_COLOR.CYAN,
     colorWarning: THEME_COLOR.GOLD,
     colorError: THEME_COLOR.VOLCANO,

@@ -28,8 +28,6 @@ const AddCowModal = ({ open, onCancel, onSubmit }) => {
         { value: 'sahiwal', label: 'Sahiwal' },
         { value: 'zebu', label: 'Zebu' },
     ]
-
-
     return (
         <Modal
             title="Add Cow"
