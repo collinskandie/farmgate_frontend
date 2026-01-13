@@ -2,14 +2,12 @@ import React from "react";
 import { Row, Col, Button, Card, Table, Tag, Select, Badge } from 'antd';
 import MilkProductionSummary from "views/app-views/apps/production/milkproduction";
 import MilkStats from "views/app-views/apps/production/milkstats";
-import {
-  recentOrderData
-} from './SalesDashboardData'
 import dayjs from 'dayjs';
 import { DATE_FORMAT_DD_MM_YYYY } from 'constants/DateConstant'
 import utils from 'utils'
 import Flex from 'components/shared-components/Flex'
 import AvatarStatus from 'components/shared-components/AvatarStatus';
+import useMilkRecords from "hooks/useMilkRecords";
 
 const getPaymentStatus = status => {
   if (status === 'Paid') {
@@ -77,16 +75,43 @@ const tableColumns = [
   },
 
 ]
-const RecentOrder = () => (
-  <Card title="Recent Order">
-    <Table
-      pagination={false}
-      columns={tableColumns}
-      dataSource={recentOrderData}
-      rowKey='id'
-    />
-  </Card>
-)
+const RecentMilkRecords = () => {
+  const { records } = useMilkRecords();
+
+  const columns = [
+    {
+      title: "Cow",
+      dataIndex: "cow_display",
+    },
+    {
+      title: "Date",
+      dataIndex: "date",
+      render: d => dayjs(d).format("DD MMM YYYY"),
+    },
+    {
+      title: "Session",
+      dataIndex: "session",
+      render: s => <Tag color={s === "morning" ? "gold" : "blue"}>{s}</Tag>,
+    },
+    {
+      title: "Litres",
+      dataIndex: "quantity_in_liters",
+      render: q => <strong>{q} L</strong>,
+    },
+  ];
+
+  return (
+    <Card title="Recent Milk Records">
+      <Table
+        rowKey="id"
+        pagination={false}
+        columns={columns}
+        dataSource={records.slice(0, 5)}
+      />
+    </Card>
+  );
+};
+
 
 const MilkDashboard = () => {
   return (
@@ -100,7 +125,9 @@ const MilkDashboard = () => {
         </Col>
       </Row>
       <Row gutter={16}>
-        <RecentOrder />
+        <Col span={24}>
+          <RecentMilkRecords />
+        </Col>
       </Row>
 
     </>

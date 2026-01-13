@@ -6,18 +6,14 @@ import AvatarStatus from 'components/shared-components/AvatarStatus';
 import GoalWidget from 'components/shared-components/GoalWidget';
 import Card from 'components/shared-components/Card';
 import Flex from 'components/shared-components/Flex';
-import {
-  VisitorChartData,
-  AnnualStatisticData,
-  ActiveMembersData,
-  NewMembersData,
-  RecentTransactionData
-} from './DefaultDashboardData';
+
+import API from "services/Api";
+import dayjs from "dayjs";
+
 import ApexChart from 'react-apexcharts';
 import { apexLineChartDefaultOption, COLOR_2 } from 'constants/ChartConstant';
 import { SPACER } from 'constants/ThemeConstant'
 import {
-  UserAddOutlined,
   FileExcelOutlined,
   PrinterOutlined,
   PlusOutlined,
@@ -106,107 +102,136 @@ const CardDropdown = ({ items }) => {
   )
 }
 
-// const tableColumns = [
-//   {
-//     title: 'Customer',
-//     dataIndex: 'name',
-//     key: 'name',
-//     render: (text, record) => (
-//       <div className="d-flex align-items-center">
-//         <Avatar size={30} className="font-size-sm" style={{ backgroundColor: record.avatarColor }}>
-//           {utils.getNameInitial(text)}
-//         </Avatar>
-//         <span className="ml-2">{text}</span>
-//       </div>
-//     ),
-//   },
-//   {
-//     title: 'Date',
-//     dataIndex: 'date',
-//     key: 'date',
-//   },
-//   {
-//     title: 'Amount',
-//     dataIndex: 'amount',
-//     key: 'amount',
-//   },
-//   {
-//     title: () => <div className="text-right">Status</div>,
-//     key: 'status',
-//     render: (_, record) => (
-//       <div className="text-right">
-//         <Tag className="mr-0" color={record.status === 'Approved' ? 'cyan' : record.status === 'Pending' ? 'blue' : 'volcano'}>{record.status}</Tag>
-//       </div>
-//     ),
-//   },
-// ];
+
 const tableColumns = [
   {
-    title: 'Farmer',
-    dataIndex: 'name',
-    key: 'name',
-    render: (text, record) => (
-      <div className="d-flex align-items-center">
-        <Avatar size={30} className="font-size-sm" style={{ backgroundColor: record.avatarColor }}>
-          {utils.getNameInitial(text)}
-        </Avatar>
-        <span className="ml-2">{text}</span>
-      </div>
-    ),
+    title: 'Cow',
+    dataIndex: 'cow_display',
   },
   {
-    title: 'Delivery Date',
+    title: 'Date',
     dataIndex: 'date',
-    key: 'date',
+    render: d => dayjs(d).format("DD MMM YYYY"),
   },
   {
-    title: 'Amount Paid',
-    dataIndex: 'amount',
-    key: 'amount',
-  },
-  {
-    title: () => <div className="text-right">Payment Status</div>,
-    key: 'status',
-    render: (_, record) => (
-      <div className="text-right">
-        <Tag className="mr-0" color={record.status === 'Approved' ? 'cyan' : record.status === 'Pending' ? 'blue' : 'volcano'}>{record.status}</Tag>
-      </div>
+    title: 'Session',
+    dataIndex: 'session',
+    render: s => (
+      <Tag color={s === 'morning' ? 'gold' : 'blue'}>
+        {s.toUpperCase()}
+      </Tag>
     ),
+  },
+  {
+    title: 'Litres',
+    dataIndex: 'quantity_in_liters',
+    render: q => <strong>{q} L</strong>,
   },
 ];
 
+
 export const DefaultDashboard = () => {
-  const [visitorChartData] = useState(VisitorChartData);
-  const [annualStatisticData] = useState(AnnualStatisticData);
-  const [activeMembersData] = useState(ActiveMembersData);
-  const [newMembersData] = useState(NewMembersData)
-  const [recentTransactionData] = useState(RecentTransactionData)
+  const [records, setRecords] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   const { direction } = useSelector(state => state.theme)
 
+  React.useEffect(() => {
+    const fetchMilkRecords = async () => {
+      try {
+        setLoading(true);
+        const res = await API("production/milk-records/", "GET");
+        setRecords(res.data);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMilkRecords();
+  }, []);
+
+
+  const today = dayjs().format("YYYY-MM-DD");
+
+  const todayRecords = records.filter(r => r.date === today);
+
+  const totalToday = todayRecords.reduce(
+    (sum, r) => sum + Number(r.quantity_in_liters),
+    0
+  );
+
+  const dailyMap = {};
+  records.forEach(r => {
+    const d = dayjs(r.date).format("DD MMM");
+    dailyMap[d] = (dailyMap[d] || 0) + Number(r.quantity_in_liters);
+  });
+
+  const chartSeries = [{
+    name: "Milk (Litres)",
+    data: Object.values(dailyMap),
+  }];
+
+  const chartCategories = Object.keys(dailyMap);
+
+  // const today = dayjs().format("YYYY-MM-DD");
+
+  // const todayRecords = records.filter(r => r.date === today);
+
+  // const totalToday = todayRecords.reduce(
+  //   (sum, r) => sum + Number(r.quantity_in_liters),
+  //   0
+  // );
+
+  const activeCows = new Set(records.map(r => r.cow)).size;
+
+  const avgPerCow = activeCows
+    ? (totalToday / activeCows).toFixed(1)
+    : 0;
   return (
     <>
       <Row gutter={16}>
         <Col xs={24} sm={24} md={24} lg={18}>
           <Row gutter={16}>
             {
-              annualStatisticData.map((elm, i) => (
+              [
+                {
+                  title: "Milk Collected Today",
+                  value: `${totalToday.toFixed(2)} L`,
+                  subtitle: "Based on today's production",
+                },
+                {
+                  title: "Active Cows",
+                  value: String(activeCows), // ✅ FIX
+                  subtitle: "Cows with milk records",
+                },
+                {
+                  title: "Average per Cow",
+                  value: `${avgPerCow} L`,
+                  subtitle: "Today's average output",
+                },
+              ].map((elm, i) => (
                 <Col xs={24} sm={24} md={24} lg={24} xl={8} key={i}>
                   <StatisticWidget
                     title={elm.title}
                     value={elm.value}
-                    status={elm.status}
                     subtitle={elm.subtitle}
                   />
                 </Col>
               ))
             }
+
+
+
           </Row>
           <Row gutter={16}>
             <Col span={24}>
               <ChartWidget
                 title="Daily Milk Collection (Litres)"
-                series={visitorChartData.series}
-                xAxis={visitorChartData.categories}
+                series={chartSeries}
+                xAxis={chartCategories}
+
                 height="400px"
                 direction={direction}
               />
@@ -221,7 +246,7 @@ export const DefaultDashboard = () => {
             subtitle="You need abit more effort to hit monthly target"
             extra={<Button type="primary">Learn More</Button>}
           />
-          <StatisticWidget
+          {/* <StatisticWidget
             title={
               <MembersChart
                 options={memberChartOption}
@@ -232,7 +257,7 @@ export const DefaultDashboard = () => {
             value='17,329'
             status={3.7}
             subtitle="Active members"
-          />
+          /> */}
         </Col>
       </Row>
       <Row gutter={16}>
@@ -240,14 +265,7 @@ export const DefaultDashboard = () => {
           <Card title="New Join Member" extra={<CardDropdown items={newJoinMemberOptions} />}>
             <div className="mt-3">
               {
-                newMembersData.map((elm, i) => (
-                  <div key={i} className={`d-flex align-items-center justify-content-between mb-4`}>
-                    <AvatarStatus id={i} src={elm.img} name={elm.name} subTitle={elm.title} />
-                    <div>
-                      <Button icon={<UserAddOutlined />} type="default" size="small">Add</Button>
-                    </div>
-                  </div>
-                ))
+
               }
             </div>
           </Card>
@@ -257,7 +275,9 @@ export const DefaultDashboard = () => {
             <Table
               className="no-border-last"
               columns={tableColumns}
-              dataSource={recentTransactionData}
+              dataSource={records.slice(0, 5)}
+              loading={loading}
+
               rowKey='id'
               pagination={false}
             />

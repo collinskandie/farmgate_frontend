@@ -1,29 +1,18 @@
 import React from "react";
 import { Row, Col, Button, Card } from "antd";
 import Flex from "components/shared-components/Flex";
-import {
-  PlusOutlined,
-  BarChartOutlined,
-} from "@ant-design/icons";
+import { PlusOutlined, BarChartOutlined } from "@ant-design/icons";
 import ChartWidget from "components/shared-components/ChartWidget";
 import { COLORS } from "constants/ChartConstant";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import {APP_PREFIX_PATH} from "configs/AppConfig";
-
-const milkProductionData = {
-  series: [
-    {
-      name: "Milk (Litres)",
-      data: [120, 135, 128, 142, 150, 160, 155],
-    },
-  ],
-  categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-};
+import { APP_PREFIX_PATH } from "configs/AppConfig";
+import useMilkRecords from "hooks/useMilkRecords";
 
 const MilkProductionSummary = () => {
   const navigate = useNavigate();
-  const { direction } = useSelector((state) => state.theme);
+  const { direction } = useSelector(state => state.theme);
+  const { totalToday, weeklySeries } = useMilkRecords();
 
   return (
     <Card>
@@ -36,9 +25,9 @@ const MilkProductionSummary = () => {
             </div>
 
             <div className="mb-4">
-              <h1 className="font-weight-bold">1,090 L</h1>
+              <h1 className="font-weight-bold">{totalToday.toFixed(2)} L</h1>
               <p className="text-success">
-                <BarChartOutlined /> Steady increase this week
+                <BarChartOutlined /> Based on real production data
               </p>
               <p>Total milk collected from all cows.</p>
             </div>
@@ -54,16 +43,10 @@ const MilkProductionSummary = () => {
         </Col>
 
         <Col xs={24} lg={16}>
-          <div className="mb-3 text-right">
-            <Button onClick={() => navigate("/app/milk-records")}>
-              View All Records
-            </Button>
-          </div>
-
           <ChartWidget
             card={false}
-            series={milkProductionData.series}
-            xAxis={milkProductionData.categories}
+            series={weeklySeries}
+            xAxis={["Mon","Tue","Wed","Thu","Fri","Sat","Sun"]}
             title="Daily Milk Production (Litres)"
             height={250}
             type="bar"
