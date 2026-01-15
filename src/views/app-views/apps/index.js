@@ -6,5 +6,4 @@ const Apps = () => (
 		<Route path="*" element={<Navigate to="mail/inbox" replace />} />
 	</Routes>
 );
-
 export default Apps;
