@@ -112,7 +112,6 @@ const RecentMilkRecords = () => {
   );
 };
 
-
 const MilkDashboard = () => {
   return (
     <>
