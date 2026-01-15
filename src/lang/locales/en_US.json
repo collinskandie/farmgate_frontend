@@ -4,6 +4,7 @@
 	"sidenav.dashboard": "Dashboard",
 	"sidenav.dashboard.default": "Dashboard",
 	"sidenav.apps.milk-production": "Milk Production",
+	"sidenav.apps.myaccount": "My Account",
 	"sidenav.apps.cows-production": "Cows Production",
 	"sidenav.apps.feeds-management": "Feeds Management",
 	"sidenav.apps.animals-health": "Animals Health",

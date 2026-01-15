@@ -212,7 +212,6 @@ const useNavigationConfig = () => {
           },
         ],
       },
-
       {
         key: 'apps',
         path: `${APP_PREFIX_PATH}/apps`,
@@ -234,7 +233,6 @@ const useNavigationConfig = () => {
               },
             ]
           },
-
           {
             key: 'apps-production',
             path: `${APP_PREFIX_PATH}/apps/production`,
@@ -244,6 +242,12 @@ const useNavigationConfig = () => {
                 key: 'apps-production-milk',
                 path: `${APP_PREFIX_PATH}/apps/production/dashboard`,
                 title: 'sidenav.apps.milk-production',
+                submenu: []
+              },
+              {
+                key: 'apps-production-myfarm',
+                path: `${APP_PREFIX_PATH}/apps/accounts/myaccount`,
+                title: 'sidenav.apps.myaccount',
                 submenu: []
               },
             ]
