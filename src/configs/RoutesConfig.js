@@ -22,7 +22,7 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/dashboards/default`,
         component: React.lazy(() => import('views/app-views/dashboards/default')),
     },
-    
+
     {
         key: 'apps',
         path: `${APP_PREFIX_PATH}/apps`,
@@ -40,7 +40,7 @@ export const protectedRoutes = [
     },
     {
         key: 'apps.myaccount.details',
-        path: `${APP_PREFIX_PATH}/apps/accounts/myaccount`,
+        path: `${APP_PREFIX_PATH}/apps/accounts/myaccount/*`,
         component: React.lazy(() => import('views/app-views/apps/accounts/myaccount')),
     },
     {
@@ -48,7 +48,7 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/farm/details/:id/*`,
         component: React.lazy(() => import('views/app-views/apps/accounts/details/farmdetails')),
     },
-    
+
     {
         key: 'apps.production',
         path: `${APP_PREFIX_PATH}/apps/production/dashboard`,
@@ -59,7 +59,7 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/production/record`,
         component: React.lazy(() => import('views/app-views/apps/production/record')),
     },
-    
+
 
 
     {

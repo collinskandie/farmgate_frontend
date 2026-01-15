@@ -174,18 +174,7 @@ export const DefaultDashboard = () => {
   }];
 
   const chartCategories = Object.keys(dailyMap);
-
-  // const today = dayjs().format("YYYY-MM-DD");
-
-  // const todayRecords = records.filter(r => r.date === today);
-
-  // const totalToday = todayRecords.reduce(
-  //   (sum, r) => sum + Number(r.quantity_in_liters),
-  //   0
-  // );
-
   const activeCows = new Set(records.map(r => r.cow)).size;
-
   const avgPerCow = activeCows
     ? (totalToday / activeCows).toFixed(1)
     : 0;
@@ -231,7 +220,6 @@ export const DefaultDashboard = () => {
                 title="Daily Milk Collection (Litres)"
                 series={chartSeries}
                 xAxis={chartCategories}
-
                 height="400px"
                 direction={direction}
               />

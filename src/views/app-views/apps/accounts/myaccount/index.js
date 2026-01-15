@@ -28,9 +28,7 @@ const ManageEmployees = lazy(() => import('views/app-views/apps/accounts/details
 const AccountMenu = () => {
 
   const userDetails = JSON.parse(localStorage.getItem('userDetails'))
-  console.log('User Details in AccountMenu:', userDetails)
   const accountid = userDetails?.id
-  console.log('Account ID in AccountMenu:', accountid)
 
 
   const location = useLocation()
@@ -60,8 +58,12 @@ const AccountMenu = () => {
 /**
  * Main Account Page
  */
-const Account = () => {
-  const accountid = useParams().id
+const MyAccount = () => {
+  const userDetails = JSON.parse(localStorage.getItem('userDetails'))
+  // console.log('User Details:', userDetails)
+  const accountid = userDetails?.account
+  // console.log('Account ID:', accountid)
+
   const [accountData, setAccountData] = React.useState(null)
 
   useEffect(() => {
@@ -99,7 +101,7 @@ const Account = () => {
           <Suspense fallback={<Loading />}>
             <Routes>
               <Route path="info" element={<AccountInfo accountData={accountData} refreshAccount={refreshAccount} />} />
-              <Route path="farms" element={<ManageFarms accountData={accountData} refreshAccount={refreshAccount}/>} />
+              <Route path="farms" element={<ManageFarms accountData={accountData} refreshAccount={refreshAccount} />} />
               <Route path="employees" element={<ManageEmployees accountData={accountData} refreshAccount={refreshAccount} />} />
               <Route path="*" element={<Navigate to="info" replace />} />
             </Routes>
@@ -110,4 +112,4 @@ const Account = () => {
   )
 }
 
-export default Account
+export default MyAccount
