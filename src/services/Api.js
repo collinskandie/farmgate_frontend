@@ -8,7 +8,6 @@ const api = axios.create({
   headers: {
     Accept: "*/*",
     "Content-Type": "application/json",
-    "x-auth-token": cookieCutter.get("csrftoken"), // Custom header included here
   },
 });
 api.interceptors.request.use((config) => {
