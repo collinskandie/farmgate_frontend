@@ -34,24 +34,22 @@ const ManageEmployees = ({ accountData, refreshAccount }) => {
       key: 'full_name',
     },
     {
-      title: 'Role',
-      dataIndex: 'role',
-      key: 'role',
-      render: role => <Tag color="blue">{role.replace('_', ' ')}</Tag>,
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email',
     },
     {
-      title: 'Assigned Farms',
-      dataIndex: 'farms',
-      key: 'farms',
-      render: farms =>
-        farms?.length
-          ? farms.map(f => (
-            <Tag key={f.id} color="green">
-              {f.name}
-            </Tag>
-          ))
-          : '—',
+      title: 'Phone',
+      dataIndex: 'phone',
+      key: 'phone',
     },
+    {
+      title: 'Role',
+      dataIndex: 'role_title',
+      key: 'role_title',
+      render: role => <Tag color="blue">{role.replace('_', ' ')}</Tag>,
+    },
+
   ]
   return (
     <>
