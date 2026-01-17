@@ -17,7 +17,7 @@ const AccountstList = () => {
       setLoading(true)
       // const res = await axios.get('/api/farms/') // 👈 adjust if needed
       const res = await API('accounts/list/', 'GET') // 👈 adjust if needed
-      console.log(res)
+      // console.log(res)
       setFarms(res.data)
     } catch (err) {
       message.error('Failed to load accounts')

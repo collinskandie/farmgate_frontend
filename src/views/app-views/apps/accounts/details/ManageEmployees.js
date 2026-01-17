@@ -7,6 +7,7 @@ import API from 'services/Api'
 const ManageEmployees = ({ accountData, refreshAccount }) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
+  console.log('Account Data in ManageEmployees:', accountData)
   const handleAddEmployee = async values => {
     try {
       setLoading(true)
@@ -16,7 +17,6 @@ const ManageEmployees = ({ accountData, refreshAccount }) => {
         'POST',
         values
       )
-
       message.success('Employee added successfully')
       setOpen(false)
       refreshAccount()

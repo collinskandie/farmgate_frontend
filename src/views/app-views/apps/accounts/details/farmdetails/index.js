@@ -59,7 +59,7 @@ const Farm = () => {
       try {
         const response = await API(`accounts/farm/${farmid}/`, 'GET')
         setFarmData(response.data)
-        console.log('Farm Data:', response.data)
+       
       } catch (error) {
         console.error('Failed to fetch farm data', error)
       }
@@ -71,7 +71,6 @@ const Farm = () => {
     try {
       const response = await API(`accounts/farm/${farmid}/`, 'GET')
       setFarmData(response.data)
-      console.log('Farm Data:', response.data)
     } catch (error) {
       console.error('Failed to fetch farm data', error)
     }

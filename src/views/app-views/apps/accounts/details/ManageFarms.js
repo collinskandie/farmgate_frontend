@@ -5,11 +5,12 @@ import AddFarmModal from 'views/app-views/apps/accounts/details/addfarmmodal'
 import API from 'services/Api'
 import { APP_PREFIX_PATH } from "configs/AppConfig";
 import { useNavigate } from "react-router-dom";
+import { render } from '@testing-library/react'
 
 const ManageFarms = ({ accountData, refreshAccount }) => {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleAddFarm = async values => {
     try {
@@ -35,7 +36,13 @@ const ManageFarms = ({ accountData, refreshAccount }) => {
     { title: 'Farm Name', dataIndex: 'name', key: 'name' },
     { title: 'Location', dataIndex: 'location', key: 'location' },
     { title: 'Size (Acres)', dataIndex: 'size_in_acres', key: 'size_in_acres' },
-    { title: 'Created At', dataIndex: 'created_at', key: 'created_at' },
+    {
+      title: 'Created On', dataIndex: 'created_at', key: 'created_at',
+      render: (text) => {
+        const date = new Date(text);
+        return date.toLocaleDateString();
+      }
+    },
     {
       title: "Actions",
       key: "actions",
@@ -46,9 +53,9 @@ const ManageFarms = ({ accountData, refreshAccount }) => {
       ),
     }
   ]
-   const handleViewDetails = (record) => {
-       navigate(`${APP_PREFIX_PATH}/apps/farm/details/${record.id}`)
-    }
+  const handleViewDetails = (record) => {
+    navigate(`${APP_PREFIX_PATH}/apps/farm/details/${record.id}`)
+  }
 
   return (
     <>

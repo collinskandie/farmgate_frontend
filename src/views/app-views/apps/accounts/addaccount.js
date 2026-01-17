@@ -86,7 +86,7 @@ const AddAccountModal = ({ open, onCancel, onSubmit }) => {
             { required: true, message: 'Phone number is required' },
           ]}
         >
-          <Input placeholder="+254700123456" />
+          <Input placeholder="254700123456" />
         </Form.Item>
 
         {/* Email */}

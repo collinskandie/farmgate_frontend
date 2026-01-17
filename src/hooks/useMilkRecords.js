@@ -9,8 +9,12 @@ const useMilkRecords = () => {
   useEffect(() => {
     const fetchRecords = async () => {
       try {
+        // const userDetails = localStorage.getItem("userDetails");
+        // const userAccount = userDetails ? JSON.parse(userDetails).account : null;
+
+        // if (!userAccount) return;
         setLoading(true);
-        const res = await API("production/milk-records/", "GET");
+        const res = await API(`production/milk-records/`, "GET");
         setRecords(res.data);
       } catch (err) {
         console.error(err);
@@ -39,7 +43,7 @@ const useMilkRecords = () => {
 
   const weeklySeries = [{
     name: "Milk (Litres)",
-    data: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"].map(d => weeklyMap[d] || 0),
+    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(d => weeklyMap[d] || 0),
   }];
 
   const milkingCows = new Set(records.map(r => r.cow)).size;

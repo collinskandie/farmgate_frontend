@@ -26,9 +26,9 @@ const ManageFarms = lazy(() => import('views/app-views/apps/accounts/details/Man
 const ManageEmployees = lazy(() => import('views/app-views/apps/accounts/details/ManageEmployees'))
 
 const AccountMenu = () => {
-  const accountid = useParams().id
+  // const accountid = useParams().id
   const location = useLocation()
-  const baseUrl = `/apps/accounts/details/${accountid}`
+  // const baseUrl = `/apps/accounts/details/${accountid}`
   const currentKey = location.pathname.split('/').pop()
 
   const items = useMemo(
@@ -50,10 +50,6 @@ const AccountMenu = () => {
   )
 }
 
-
-/**
- * Main Account Page
- */
 const Account = () => {
   const accountid = useParams().id
   const [accountData, setAccountData] = React.useState(null)
@@ -64,7 +60,7 @@ const Account = () => {
       try {
         const response = await API(`accounts/${accountid}/`, 'GET')
         setAccountData(response.data)
-        console.log('Account Data:', response.data)
+        // console.log('Account Data:', response.data)
       } catch (error) {
         console.error('Failed to fetch account data', error)
       }
@@ -76,7 +72,7 @@ const Account = () => {
     try {
       const response = await API(`accounts/${accountid}/`, 'GET')
       setAccountData(response.data)
-      console.log('Account Data:', response.data)
+      // console.log('Account Data:', response.data)
     } catch (error) {
       console.error('Failed to fetch account data', error)
     }
