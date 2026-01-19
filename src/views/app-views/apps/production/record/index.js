@@ -213,8 +213,8 @@ const MilkRecords = () => {
       title: "Total (L)",
       render: (_, r) => (
         <span style={{ fontSize: 16 }}>
-          <strong>{r.total}</strong>
-          <DiffBadge diff={r.totalDiff} />
+          <strong>{Number(r.total).toFixed(2)}</strong>
+          <DiffBadge diff={Number(r.totalDiff).toFixed(2)} />
         </span>
       ),
     },
