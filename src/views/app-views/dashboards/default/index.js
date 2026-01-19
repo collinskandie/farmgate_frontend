@@ -238,7 +238,6 @@ export const DefaultDashboard = () => {
   const comparisonData = Object.values(todayMap).map((t) => {
     const y = yesterdayMap[t.cow] || {};
     const diff = (a, b) => (b !== undefined ? a - b : null);
-
     return {
       key: t.cow,
       cow_display: t.cow_display,
@@ -252,7 +251,6 @@ export const DefaultDashboard = () => {
       totalDiff: diff(t.total, y.total),
     };
   });
-
   /* ----------------------------------
      Table columns (pivoted)
   ---------------------------------- */
