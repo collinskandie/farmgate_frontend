@@ -70,7 +70,6 @@ const MilkRecords = () => {
   const fetchCows = async () => {
     const res = await API("accounts/getcows/", "GET");
     setCows(res.data);
-
     // Prefill Excel-style rows
     setRows(
       res.data.map((cow) => ({
@@ -231,8 +230,9 @@ const MilkRecords = () => {
 
   const pieData = comparisonData.map((r) => ({
     name: r.cow_display,
-    value: r.total,
+    value: Number(r.total.toFixed(2)),
   }));
+
 
   /* ----------------------------------
      Render
