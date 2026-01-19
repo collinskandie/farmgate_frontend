@@ -20,12 +20,14 @@ import { Pie } from "@ant-design/plots";
    Small helper for diff rendering
 ---------------------------------- */
 const DiffBadge = ({ diff }) => {
-  if (diff === null || diff === undefined) return null;
+  if (typeof diff !== "number") return null;
+
+  const value = diff.toFixed(1);
 
   if (diff > 0) {
     return (
       <span style={{ color: "#3f8600", marginLeft: 6 }}>
-        ▲ +{diff.toFixed(1)}
+        ▲ +{value}
       </span>
     );
   }
@@ -33,7 +35,7 @@ const DiffBadge = ({ diff }) => {
   if (diff < 0) {
     return (
       <span style={{ color: "#cf1322", marginLeft: 6 }}>
-        ▼ {diff.toFixed(1)}
+        ▼ {value}
       </span>
     );
   }
@@ -44,6 +46,7 @@ const DiffBadge = ({ diff }) => {
     </span>
   );
 };
+
 
 const MilkRecords = () => {
   const [records, setRecords] = useState([]);
@@ -214,10 +217,11 @@ const MilkRecords = () => {
       render: (_, r) => (
         <span style={{ fontSize: 16 }}>
           <strong>{Number(r.total).toFixed(2)}</strong>
-          <DiffBadge diff={Number(r.totalDiff).toFixed(2)} />
+          <DiffBadge diff={r.totalDiff} />
         </span>
       ),
     },
+
   ];
 
   /* ----------------------------------
@@ -229,9 +233,10 @@ const MilkRecords = () => {
   );
 
   const pieData = comparisonData.map((r) => ({
-    name: r.cow_display,
-    value: Number(r.total.toFixed(2)),
-  }));
+  name: r.cow_display,
+  value: Number((r.total ?? 0).toFixed(2)),
+}));
+
 
 
   /* ----------------------------------
