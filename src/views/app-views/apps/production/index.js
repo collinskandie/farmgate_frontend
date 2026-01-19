@@ -31,63 +31,21 @@ const getShippingStatus = status => {
   }
   return ''
 }
-const tableColumns = [
-  {
-    title: 'ID',
-    dataIndex: 'id'
-  },
-  {
-    title: 'Cows Name',
-    dataIndex: 'name',
-    render: (_, record) => (
-      <Flex>
-        <AvatarStatus size={30} src={record.image} name={record.name} />
-      </Flex>
-    ),
-    sorter: (a, b) => utils.antdTableSorter(a, b, 'name')
-  },
-  {
-    title: 'Date',
-    dataIndex: 'date',
-    render: (_, record) => (
-      <span>{dayjs.unix(record.date).format(DATE_FORMAT_DD_MM_YYYY)}</span>
-    ),
-    sorter: (a, b) => utils.antdTableSorter(a, b, 'date')
-  },
-  {
-    title: 'Time',
-    dataIndex: 'orderStatus',
-    render: (_, record) => (
-      <><Tag color={getShippingStatus(record.orderStatus)}>{record.orderStatus}</Tag></>
-    ),
-    sorter: (a, b) => utils.antdTableSorter(a, b, 'orderStatus')
-  },
-  {
-    title: 'Litres Collected',
-    dataIndex: 'paymentStatus',
-    render: (_, record) => (
-      <>
-        <Badge status={getPaymentStatus(record.paymentStatus)} />
-        <span className="mx-2">{record.paymentStatus}</span>
-      </>
-    ),
-    sorter: (a, b) => utils.antdTableSorter(a, b, 'paymentStatus')
-  },
 
-]
 const RecentMilkRecords = () => {
   const { records } = useMilkRecords();
 
   const columns = [
     {
-      title: "Cow",
-      dataIndex: "cow_display",
-    },
-    {
       title: "Date",
       dataIndex: "date",
       render: d => dayjs(d).format("DD MMM YYYY"),
     },
+    {
+      title: "Cow",
+      dataIndex: "cow_display",
+    },
+
     {
       title: "Session",
       dataIndex: "session",
@@ -106,7 +64,7 @@ const RecentMilkRecords = () => {
         rowKey="id"
         pagination={false}
         columns={columns}
-        dataSource={records.slice(0, 5)}
+        dataSource={records.slice(0, 10)}
       />
     </Card>
   );

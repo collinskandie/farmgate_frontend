@@ -9,10 +9,6 @@ const useMilkRecords = () => {
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        // const userDetails = localStorage.getItem("userDetails");
-        // const userAccount = userDetails ? JSON.parse(userDetails).account : null;
-
-        // if (!userAccount) return;
         setLoading(true);
         const res = await API(`production/milk-records/`, "GET");
         setRecords(res.data);
@@ -41,13 +37,23 @@ const useMilkRecords = () => {
     weeklyMap[day] = (weeklyMap[day] || 0) + Number(r.quantity_in_liters);
   });
 
+  // const weeklySeries = [{
+  //   name: "Milk (Litres)",
+  //   data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(d => weeklyMap[d] || 0),
+  // }];
   const weeklySeries = [{
     name: "Milk (Litres)",
-    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(d => weeklyMap[d] || 0),
+    data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
+      d => Number((weeklyMap[d] || 0).toFixed(2))
+    ),
   }];
 
+
   const milkingCows = new Set(records.map(r => r.cow)).size;
-  const avgPerCow = milkingCows ? (totalToday / milkingCows).toFixed(1) : 0;
+  const avgPerCow = milkingCows
+    ? Number((totalToday / milkingCows).toFixed(1))
+    : 0;
+
 
   return {
     records,
