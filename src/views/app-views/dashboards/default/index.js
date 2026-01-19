@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Button, Avatar, Dropdown, Table, Menu, Tag } from 'antd';
+import { Row, Col, Button, Space, Avatar, Dropdown, Table, Menu, Tag } from 'antd';
 import StatisticWidget from 'components/shared-components/StatisticWidget';
 import ChartWidget from 'components/shared-components/ChartWidget';
 import AvatarStatus from 'components/shared-components/AvatarStatus';
@@ -294,11 +294,12 @@ export const DefaultDashboard = () => {
       title: "Total (L)",
       render: (_, r) => (
         <span style={{ fontSize: 16 }}>
-          <strong>{r.total}</strong>
+          <strong>{Number(r.total).toFixed(2)}</strong>
           <DiffBadge diff={r.totalDiff} />
         </span>
       ),
     },
+
   ];
   return (
     <>
@@ -362,15 +363,17 @@ export const DefaultDashboard = () => {
       <Row gutter={16}>
 
         <Col xs={24} sm={24} md={24} lg={17}>
-          <Card title="Latest Transactions" extra={<CardDropdown items={latestTransactionOption} />}>
+          <Card>
+            <Space style={{ marginBottom: 16, justifyContent: "space-between", width: "100%" }}>
+              <h3>Today's Milk Production Summary</h3>
+            </Space>
             <Table
-              className="no-border-last"
-              columns={columns}
-              dataSource={records.slice(0, 5)}
+              bordered
               loading={loading}
-
-              rowKey='id'
               pagination={false}
+              columns={columns}
+              dataSource={comparisonData}
+              rowClassName={() => "hover-row"}
             />
           </Card>
         </Col>
