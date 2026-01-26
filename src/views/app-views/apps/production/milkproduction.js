@@ -9,10 +9,10 @@ import { useSelector } from "react-redux";
 import { APP_PREFIX_PATH } from "configs/AppConfig";
 import useMilkRecords from "hooks/useMilkRecords";
 
-const MilkProductionSummary = () => {
+const MilkProductionSummary = ({date}) => {
   const navigate = useNavigate();
   const { direction } = useSelector(state => state.theme);
-  const { totalToday, weeklySeries } = useMilkRecords();
+  const { total, weeklySeries } = useMilkRecords(date);
 
   return (
     <Card>
@@ -21,11 +21,11 @@ const MilkProductionSummary = () => {
           <Flex className="h-100" flexDirection="column" justifyContent="space-between">
             <div>
               <h4 className="mb-0">Milk Production</h4>
-              <span className="text-muted">This week</span>
+              <span className="text-muted">Today</span>
             </div>
 
             <div className="mb-4">
-              <h1 className="font-weight-bold">{totalToday.toFixed(2)} L</h1>
+              <h1 className="font-weight-bold">{total.toFixed(2)} L</h1>
               <p className="text-success">
                 <BarChartOutlined /> Based on real production data
               </p>

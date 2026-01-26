@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import API from "services/Api";
 import dayjs from "dayjs";
 
-const useMilkRecords = () => {
+const useMilkRecords = (selectedDate) => {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -10,8 +10,20 @@ const useMilkRecords = () => {
     const fetchRecords = async () => {
       try {
         setLoading(true);
-        const res = await API(`production/milk-records/`, "GET");
-        setRecords(res.data);
+
+        const params = selectedDate
+          ? `?date=${dayjs(selectedDate).format("YYYY-MM-DD")}`
+          : "";
+
+        const res = await API(`production/milk-records/${params}`, "GET");
+        const raw = res.data;
+        const recordsArray = Array.isArray(raw)
+          ? raw
+          : Array.isArray(raw?.data)
+            ? raw.data
+            : [];
+
+        setRecords(recordsArray);
       } catch (err) {
         console.error(err);
       } finally {
@@ -20,16 +32,16 @@ const useMilkRecords = () => {
     };
 
     fetchRecords();
-  }, []);
+  }, [selectedDate]);
 
-  const today = dayjs().format("YYYY-MM-DD");
 
-  const todayRecords = records.filter(r => r.date === today);
+  const safeRecords = Array.isArray(records) ? records : [];
 
-  const totalToday = todayRecords.reduce(
-    (sum, r) => sum + Number(r.quantity_in_liters),
+  const total = safeRecords.reduce(
+    (sum, r) => sum + Number(r?.quantity_in_liters || 0),
     0
   );
+
 
   const weeklyMap = {};
   records.forEach(r => {
@@ -37,10 +49,6 @@ const useMilkRecords = () => {
     weeklyMap[day] = (weeklyMap[day] || 0) + Number(r.quantity_in_liters);
   });
 
-  // const weeklySeries = [{
-  //   name: "Milk (Litres)",
-  //   data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(d => weeklyMap[d] || 0),
-  // }];
   const weeklySeries = [{
     name: "Milk (Litres)",
     data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map(
@@ -48,17 +56,15 @@ const useMilkRecords = () => {
     ),
   }];
 
-
   const milkingCows = new Set(records.map(r => r.cow)).size;
   const avgPerCow = milkingCows
-    ? Number((totalToday / milkingCows).toFixed(1))
+    ? Number((total / milkingCows).toFixed(1))
     : 0;
-
 
   return {
     records,
     loading,
-    totalToday,
+    total,
     weeklySeries,
     milkingCows,
     avgPerCow,

@@ -3,7 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 const Apps = () => (
 	<Routes>
-		<Route path="*" element={<Navigate to="mail/inbox" replace />} />
+		<Route path="*" element={<Navigate to="production/inbox" replace />} />
 	</Routes>
 );
 export default Apps;

@@ -8,19 +8,19 @@ import {
 } from "@ant-design/icons";
 import useMilkRecords from "hooks/useMilkRecords";
 
-const MilkStats = () => {
+const MilkStats = ({ date }) => {
   const {
-    totalToday,
+    total,
     milkingCows,
     avgPerCow,
-  } = useMilkRecords();
+  } = useMilkRecords(date);
 
   return (
     <Row gutter={16}>
       <Col span={12}>
         <DataDisplayWidget
           icon={<ExperimentOutlined />}
-          value={`${totalToday.toFixed(2)} L`}
+          value={`${total?.toFixed(2)} L`}
           title="Today’s Milk"
           color="blue"
           vertical
