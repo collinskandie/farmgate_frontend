@@ -10,6 +10,7 @@ import {
   Card,
   Input,
   DatePicker,
+  FloatButton,
 } from "antd";
 
 import { PlusOutlined } from "@ant-design/icons";
@@ -157,26 +158,7 @@ const MilkRecords = () => {
   const today = dayjs().format("YYYY-MM-DD");
   const yesterday = dayjs().subtract(1, "day").format("YYYY-MM-DD");
 
-  // const aggregateByCow = (date) =>
-  //   records
-  //     .filter((r) => r.date === date)
-  //     .reduce((acc, r) => {
-  //       const cow = r.cow;
-  //       if (!acc[cow]) {
-  //         acc[cow] = {
-  //           cow,
-  //           cow_display: r.cow_display,
-  //           morning: 0,
-  //           afternoon: 0,
-  //           evening: 0,
-  //           total: 0,
-  //         };
-  //       }
 
-  //       acc[cow][r.session] += Number(r.quantity_in_liters);
-  //       acc[cow].total += Number(r.quantity_in_liters);
-  //       return acc;
-  //     }, {});
   const aggregateByCow = (data) =>
     data.reduce((acc, r) => {
       const cow = r.cow;
@@ -284,6 +266,32 @@ const MilkRecords = () => {
     name: r.cow_display,
     value: Number((r.total ?? 0).toFixed(2)),
   }));
+  const downloadReport = async () => {
+    try {
+      const res = await API(
+        "production/reports/milk-production/download/",
+        "GET",
+        null,
+        {
+          responseType: "blob",
+        }
+      );
+
+      const blob = new Blob([res.data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "milk-production-report.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
 
 
@@ -405,6 +413,7 @@ const MilkRecords = () => {
             scroll={{ x: 700 }}
           />
         </Card>
+        <FloatButton onClick={() => downloadReport()} />
         <Modal
           title={`Milk Entry – ${dayjs().format("DD MMM YYYY")}`}
           open={open}
