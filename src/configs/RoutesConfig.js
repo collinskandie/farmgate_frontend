@@ -58,6 +58,11 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/production/record`,
         component: React.lazy(() => import('views/app-views/apps/production/record')),
     },
+     {
+        key: 'apps.breeding',
+        path: `${APP_PREFIX_PATH}/apps/breeding/dashboard`,
+        component: React.lazy(() => import('views/app-views/apps/breeding')),
+    },
 
 
 

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Table, message } from 'antd'
+import { Button, Table,Card, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import AddFarmModal from 'views/app-views/apps/accounts/addaccount'
 import API from 'services/Api'
 import { useNavigate } from "react-router-dom";
 import { APP_PREFIX_PATH } from "configs/AppConfig";
+import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 
 const AccountstList = () => {
   const [farms, setFarms] = useState([])
@@ -81,37 +82,45 @@ const AccountstList = () => {
   ]
   const handleViewDetails = (record) => {
     // Implement navigation to account details page
-     navigate(`${APP_PREFIX_PATH}/apps/accounts/details/${record.id}`)
+    navigate(`${APP_PREFIX_PATH}/apps/accounts/details/${record.id}`)
   }
 
 
   return (
     <>
-      <div className="d-flex justify-content-between mb-3">
-        <h3>Registered Farms</h3>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setOpen(true)}
-        >
-          Register New Account
-        </Button>
-      </div>
+      <PageHeaderAlt background="/img/others/img-17.jpg" cssClass="bg-primary" overlap>
+        <div className="container text-center">
+          <div className="py-3 my-md-3"></div>
+        </div>
+      </PageHeaderAlt>
+      <Card>
+        <div className="d-flex justify-content-between mb-3">
+          <h3>Registered Farms</h3>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setOpen(true)}
+          >
+            Register New Account
+          </Button>
+        </div>
 
-      <Table
-        rowKey="id"
-        columns={columns}
-        dataSource={farms}
-        loading={loading}
-        bordered
-        pagination={{ pageSize: 10 }}
-      />
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={farms}
+          loading={loading}
+          bordered
+          pagination={{ pageSize: 10 }}
+        />
 
-      <AddFarmModal
-        open={open}
-        onCancel={() => setOpen(false)}
-        onSubmit={addFarm}
-      />
+        <AddFarmModal
+          open={open}
+          onCancel={() => setOpen(false)}
+          onSubmit={addFarm}
+        />
+      </Card>
+
     </>
   )
 }

@@ -9,7 +9,9 @@ import {
   Tag,
   Card,
   Input,
+  DatePicker,
 } from "antd";
+
 import { PlusOutlined } from "@ant-design/icons";
 import dayjs from "dayjs";
 import API from "services/Api";
@@ -54,21 +56,37 @@ const MilkRecords = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(dayjs());
+
 
   /* ----------------------------------
      Fetch data
   ---------------------------------- */
-  const fetchRecords = async () => {
+  const fetchRecords = async (date = selectedDate) => {
     try {
       setLoading(true);
-      const res = await API("production/milk-records/", "GET");
-      setRecords(res.data);
+
+      const params = date
+        ? `?date=${dayjs(date).format("YYYY-MM-DD")}`
+        : "";
+
+      const res = await API(`production/milk-records/${params}`, "GET");
+
+      const raw = res.data;
+      const recordsArray = Array.isArray(raw)
+        ? raw
+        : Array.isArray(raw?.data)
+          ? raw.data
+          : [];
+
+      setRecords(recordsArray);
     } catch {
       message.error("Failed to load milk records");
     } finally {
       setLoading(false);
     }
   };
+
 
   const fetchCows = async () => {
     const res = await API("accounts/getcows/", "GET");
@@ -88,9 +106,9 @@ const MilkRecords = () => {
   };
 
   useEffect(() => {
-    fetchRecords();
+    fetchRecords(selectedDate);
     fetchCows();
-  }, []);
+  }, [selectedDate]);
 
   /* ----------------------------------
      Bulk submit
@@ -233,9 +251,9 @@ const MilkRecords = () => {
   );
 
   const pieData = comparisonData.map((r) => ({
-  name: r.cow_display,
-  value: Number((r.total ?? 0).toFixed(2)),
-}));
+    name: r.cow_display,
+    value: Number((r.total ?? 0).toFixed(2)),
+  }));
 
 
 
@@ -244,13 +262,23 @@ const MilkRecords = () => {
   ---------------------------------- */
   return (
     <>
-      <PageHeaderAlt background="/img/others/img-17.jpg" cssClass="bg-primary" overlap />
+      <PageHeaderAlt background="/img/others/img-17.jpg" cssClass="bg-primary" overlap>
+        <div className="container text-center">
+          <div className="py-3 my-md-3"></div>
+        </div>
+      </PageHeaderAlt>
 
       <Card style={{ borderRadius: 12 }}>
         <Card
           style={{ marginBottom: 16 }}
           bodyStyle={{ padding: "12px 16px" }}
         >
+          <DatePicker
+            value={selectedDate}
+            onChange={(d) => setSelectedDate(d)}
+            allowClear={false}
+          />
+
           <Space style={{ width: "100%", justifyContent: "space-between" }}>
             <div>
               <h4 style={{ marginBottom: 4, fontSize: 14 }}>
@@ -269,7 +297,7 @@ const MilkRecords = () => {
               </h1>
 
               <span style={{ fontSize: 12, color: "#8c8c8c" }}>
-                {dayjs().format("DD MMM YYYY")}
+                {dayjs(selectedDate).format("DD MMM YYYY")}
               </span>
             </div>
 

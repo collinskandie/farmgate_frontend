@@ -1,9 +1,10 @@
 import React, { lazy, Suspense, useEffect, useMemo } from 'react'
-import { Menu } from 'antd'
+import { Menu,Card } from 'antd'
 import InnerAppLayout from 'layouts/inner-app-layout'
 import { Routes, Route, Navigate, Link, useLocation, useParams } from 'react-router-dom'
 import Loading from 'components/shared-components/Loading'
 import API from 'services/Api'
+import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 
 
 const menuList = [
@@ -79,24 +80,36 @@ const Account = () => {
   }
 
   return (
-    <InnerAppLayout
-      sideContent={<AccountMenu />}
-      sideContentWidth={280}
-      sideContentGutter={false}
-      border
-      mainContent={
-        <div className="p-4">
-          <Suspense fallback={<Loading />}>
-            <Routes>
-              <Route path="info" element={<AccountInfo accountData={accountData} refreshAccount={refreshAccount} />} />
-              <Route path="farms" element={<ManageFarms accountData={accountData} refreshAccount={refreshAccount}/>} />
-              <Route path="employees" element={<ManageEmployees accountData={accountData} refreshAccount={refreshAccount} />} />
-              <Route path="*" element={<Navigate to="info" replace />} />
-            </Routes>
-          </Suspense>
+    <>
+      <PageHeaderAlt background="/img/others/img-17.jpg" cssClass="bg-primary" overlap>
+        <div className="container text-center">
+          <div className="py-3 my-md-3"></div>
         </div>
-      }
-    />
+      </PageHeaderAlt>
+      <Card>
+        <InnerAppLayout
+          sideContent={<AccountMenu />}
+          sideContentWidth={280}
+          sideContentGutter={false}
+          border
+          mainContent={
+            <div className="p-4">
+              <Suspense fallback={<Loading />}>
+                <Routes>
+                  <Route path="info" element={<AccountInfo accountData={accountData} refreshAccount={refreshAccount} />} />
+                  <Route path="farms" element={<ManageFarms accountData={accountData} refreshAccount={refreshAccount} />} />
+                  <Route path="employees" element={<ManageEmployees accountData={accountData} refreshAccount={refreshAccount} />} />
+                  <Route path="*" element={<Navigate to="info" replace />} />
+                </Routes>
+              </Suspense>
+            </div>
+          }
+        />
+      </Card>
+
+
+    </>
+
   )
 }
 

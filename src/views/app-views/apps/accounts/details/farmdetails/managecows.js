@@ -52,12 +52,28 @@ const ManageCows = ({ farmData, refreshFarm }) => {
       key: 'date_of_birth',
     },
     {
-      title: 'Pregnancy Status',
-      dataIndex: 'is_pregnant',
-      key: 'is_pregnant',
-      render: value =>
-        value ? <Tag color="green">Pregnant</Tag> : <Tag>Not Pregnant</Tag>,
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'status',
+      render: status => {
+        const colors = {
+          heifer: 'blue',
+          lactating: 'green',
+          dry: 'orange',
+        }
+
+        if (!status) {
+          return <Tag color="default">UNKNOWN</Tag>
+        }
+
+        return (
+          <Tag color={colors[status] || 'default'}>
+            {status.toUpperCase()}
+          </Tag>
+        )
+      },
     },
+
   ]
   return (
     <>
@@ -78,7 +94,6 @@ const ManageCows = ({ farmData, refreshFarm }) => {
         dataSource={farmData?.cows || []}
         locale={{ emptyText: 'No cows registered yet' }}
       />
-
       <AddCowModal
         open={open}
         onCancel={() => setOpen(false)}

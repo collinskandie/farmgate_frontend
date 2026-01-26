@@ -5,12 +5,18 @@ import MilkProductionSummary from "views/app-views/apps/production/milkproductio
 import MilkStats from "views/app-views/apps/production/milkstats";
 import useMilkRecords from "hooks/useMilkRecords";
 import RecentMilkRecords from "./RecentMilkRecords";
+import PageHeaderAlt from "components/layout-components/PageHeaderAlt";
 
 const MilkDashboard = () => {
   const [selectedDate, setSelectedDate] = useState(dayjs());
 
   return (
     <>
+      <PageHeaderAlt background="/img/others/img-17.jpg" cssClass="bg-primary" overlap>
+        <div className="container text-center">
+          <div className="py-3 my-md-3"></div>
+        </div>
+      </PageHeaderAlt>
       <Card style={{ marginBottom: 16 }}>
         <DatePicker
           value={selectedDate}

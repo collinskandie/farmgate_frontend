@@ -1,12 +1,8 @@
 import React from "react";
-import { Row, Col, Button, Card, Table, Tag, Select, Badge } from 'antd';
-import MilkProductionSummary from "views/app-views/apps/production/milkproduction";
-import MilkStats from "views/app-views/apps/production/milkstats";
+import {  Card, Table, Tag } from 'antd';
+
 import dayjs from 'dayjs';
-import { DATE_FORMAT_DD_MM_YYYY } from 'constants/DateConstant'
-import utils from 'utils'
-import Flex from 'components/shared-components/Flex'
-import AvatarStatus from 'components/shared-components/AvatarStatus';
+
 import useMilkRecords from "hooks/useMilkRecords";
 
 const RecentMilkRecords = ({ date }) => {
@@ -47,21 +43,4 @@ const RecentMilkRecords = ({ date }) => {
   );
 };
 
-
-// const RecentMilkRecords = () => {
-//   const { records } = useMilkRecords();
-
-
-
-//   return (
-//     <Card title="Recent Milk Records">
-//       <Table
-//         rowKey="id"
-//         pagination={false}
-//         columns={columns}
-//         dataSource={records.slice(0, 10)}
-//       />
-//     </Card>
-//   );
-// };
 export default RecentMilkRecords;

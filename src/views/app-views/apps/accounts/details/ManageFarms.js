@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Table, message } from 'antd'
+import { Button, Table, Card, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import AddFarmModal from 'views/app-views/apps/accounts/details/addfarmmodal'
 import API from 'services/Api'
@@ -59,30 +59,33 @@ const ManageFarms = ({ accountData, refreshAccount }) => {
 
   return (
     <>
-      <div className="d-flex justify-content-between mb-3">
-        <h3>Farms</h3>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setOpen(true)}
-        >
-          Add Farm
-        </Button>
-      </div>
+      <Card>
+        <div className="d-flex justify-content-between mb-3">
+          <h3>Farms</h3>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setOpen(true)}
+          >
+            Add Farm
+          </Button>
+        </div>
 
-      <Table
-        rowKey="id"
-        columns={columns}
-        dataSource={accountData?.farms || []}
-        locale={{ emptyText: 'No farms registered yet' }}
-      />
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={accountData?.farms || []}
+          locale={{ emptyText: 'No farms registered yet' }}
+        />
 
-      <AddFarmModal
-        open={open}
-        onCancel={() => setOpen(false)}
-        onSubmit={handleAddFarm}
-        loading={loading}
-      />
+        <AddFarmModal
+          open={open}
+          onCancel={() => setOpen(false)}
+          onSubmit={handleAddFarm}
+          loading={loading}
+        />
+      </Card>
+
     </>
   )
 }

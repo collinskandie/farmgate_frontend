@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
-import { Modal, Form, Input, DatePicker, Switch } from 'antd'
+import { Modal, Form, Input,Tag, DatePicker, Switch } from 'antd'
 import { Select } from 'antd'
+import dayjs from "dayjs";
 const { Option } = Select
+
 
 const AddCowModal = ({ open, onCancel, onSubmit }) => {
     const [form] = Form.useForm()
@@ -63,22 +65,43 @@ const AddCowModal = ({ open, onCancel, onSubmit }) => {
                         options={BREEDS}
                     />
                 </Form.Item>
-                 <Form.Item
+                <Form.Item
                     label="Date of Birth"
                     name="date_of_birth"
                     rules={[{ required: true }]}
                 >
                     <DatePicker style={{ width: '100%' }} />
                 </Form.Item>
+                <Form.Item shouldUpdate>
+                    {({ getFieldValue }) => {
+                        const dob = getFieldValue('date_of_birth')
+                        if (!dob) return null
+
+                        const ageInMonths = dayjs().diff(dob, 'month')
+
+                        if (ageInMonths < 18) {
+                            return <Tag color="blue">Suggested: Heifer</Tag>
+                        }
+                        return null
+                    }}
+                </Form.Item>
+
 
                 <Form.Item
-                    label="Pregnant?"
-                    name="is_pregnant"
-                    valuePropName="checked"
-                    initialValue={false}
+                    label="Cow Status"
+                    name="status"
+                    rules={[{ required: true }]}
                 >
-                    <Switch />
+                    <Select
+                        placeholder="Select cow status"
+                        options={[
+                            { value: 'heifer', label: 'Heifer' },
+                            { value: 'lactating', label: 'Active Milker' },
+                            { value: 'dry', label: 'Dry Milker' },
+                        ]}
+                    />
                 </Form.Item>
+
             </Form>
         </Modal>
     )

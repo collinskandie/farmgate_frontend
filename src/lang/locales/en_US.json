@@ -8,7 +8,8 @@
 	"sidenav.apps.cows-production": "Cows Production",
 	"sidenav.apps.feeds-management": "Feeds Management",
 	"sidenav.apps.animals-health": "Animals Health",
-	"sidenav.apps.animals-breeding": "Animals Breeding",
+	"sidenav.apps.breeding": "Animals Breeding",
+	"sidenav.apps.breeding-dash": "Breeding Dashboard",
 	"sidenav.apps.financials": "Farm Financials",
 	"sidenav.apps.income": "Farm Income",
 	"sidenav.apps.expenses": "Farm Expenses",
@@ -20,6 +21,8 @@
 	"sidenav.apps.farms-list": "Farm List",
 	"sidenav.apps.farms-details": "Farm Details",
 	"sidenav.apps.production": "Production",
+
+	
 	"sidenav.apps.calendar": "Calendar",
 	"sidenav.apps.project": "Project",
 	"sidenav.apps.project.list": "List",

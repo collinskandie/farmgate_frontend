@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Table, Tag, message } from 'antd'
+import { Button, Table,Card, Tag, message } from 'antd'
 import { PlusOutlined } from '@ant-design/icons'
 import AddEmployeeModal from 'views/app-views/apps/accounts/details/addemployeemodal'
 import API from 'services/Api'
@@ -53,29 +53,32 @@ const ManageEmployees = ({ accountData, refreshAccount }) => {
   ]
   return (
     <>
-      <div className="d-flex justify-content-between mb-3">
-        <h3>Employees</h3>
-        <Button
-          type="primary"
-          icon={<PlusOutlined />}
-          onClick={() => setOpen(true)}
-        >
-          Add Employee
-        </Button>
-      </div>
-      <Table
-        rowKey="id"
-        columns={columns}
-        dataSource={accountData?.users || []}
-        locale={{ emptyText: 'No employees found' }}
-      />
-      <AddEmployeeModal
-        open={open}
-        onCancel={() => setOpen(false)}
-        onSubmit={handleAddEmployee}
-        loading={loading}
-        farms={accountData?.farms || []}
-      />
+      <Card>
+        <div className="d-flex justify-content-between mb-3">
+          <h3>Employees</h3>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => setOpen(true)}
+          >
+            Add Employee
+          </Button>
+        </div>
+        <Table
+          rowKey="id"
+          columns={columns}
+          dataSource={accountData?.users || []}
+          locale={{ emptyText: 'No employees found' }}
+        />
+        <AddEmployeeModal
+          open={open}
+          onCancel={() => setOpen(false)}
+          onSubmit={handleAddEmployee}
+          loading={loading}
+          farms={accountData?.farms || []}
+        />
+      </Card>
+
     </>
   )
 }
