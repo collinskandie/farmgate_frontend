@@ -27,19 +27,8 @@ const BreedingDashboard = () => {
           </p>
         </div>
       </PageHeaderAlt>
-
-      {/* Date Filter */}
-      <Card style={{ marginBottom: 16 }}>
-        <DatePicker
-          value={selectedDate}
-          onChange={setSelectedDate}
-          allowClear={false}
-        />
-      </Card>
-
       {/* KPI Cards */}
       <BreedingOverviewCards date={selectedDate} />
-
       {/* Main Panels */}
       <Row gutter={16}>
         <Col xs={24} lg={16}>
@@ -49,7 +38,6 @@ const BreedingDashboard = () => {
           <PregnancyStats date={selectedDate} />
         </Col>
       </Row>
-
       {/* Upcoming + Recent */}
       <Row gutter={16}>
         <Col xs={24} lg={12}>

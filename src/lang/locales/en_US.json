@@ -14,8 +14,12 @@
 	"sidenav.apps.income": "Farm Income",
 	"sidenav.apps.expenses": "Farm Expenses",
 	"sidenav.apps.reports": "Farm Reports",
-
-
+	"sidenav.apps.breeding.dashboard": "Breeding Dashboard",
+	"sidenav.apps.breeding.heat":"Heat",
+	"sidenav.apps.breeding.events":"Events",
+	"sidenav.apps.breeding.pregnancies": "Pregnancies",
+	"sidenav.apps.breeding.calving":"Calving",
+	"sidenav.apps.breeding.history":"History",
 	"sidenav.apps": "Apps",
 	"sidenav.apps.farms": "Farm Management",
 	"sidenav.apps.farms-list": "Farm List",

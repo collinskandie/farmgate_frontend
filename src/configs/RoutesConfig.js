@@ -58,10 +58,35 @@ export const protectedRoutes = [
         path: `${APP_PREFIX_PATH}/apps/production/record`,
         component: React.lazy(() => import('views/app-views/apps/production/record')),
     },
-     {
-        key: 'apps.breeding',
+    {
+        key: 'apps.breeding.dashboard',
         path: `${APP_PREFIX_PATH}/apps/breeding/dashboard`,
         component: React.lazy(() => import('views/app-views/apps/breeding')),
+    },
+    {
+        key: 'apps.breeding.heat',
+        path: `${APP_PREFIX_PATH}/apps/breeding/heat`,
+        component: React.lazy(() => import('views/app-views/apps/breeding/deatails/heat')),
+    },
+    {
+        key: 'apps.breeding.events',
+        path: `${APP_PREFIX_PATH}/apps/breeding/events`,
+        component: React.lazy(() => import('views/app-views/apps/breeding/deatails/events')),
+    },
+    {
+        key: 'apps.breeding.pregnancy',
+        path: `${APP_PREFIX_PATH}/apps/breeding/pregnancies`,
+        component: React.lazy(() => import('views/app-views/apps/breeding/deatails/pregnancy')),
+    },
+    {
+        key: 'apps.breeding.calving',
+        path: `${APP_PREFIX_PATH}/apps/breeding/calving`,
+        component: React.lazy(() => import('views/app-views/apps/breeding/deatails/calving')),
+    },
+    {
+        key: 'apps.breeding.history',
+        path: `${APP_PREFIX_PATH}/apps/breeding/history`,
+        component: React.lazy(() => import('views/app-views/apps/breeding/deatails/history')),
     },
 
 

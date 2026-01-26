@@ -52,6 +52,7 @@ const DiffBadge = ({ diff }) => {
 
 const MilkRecords = () => {
   const [records, setRecords] = useState([]);
+  const [yesterrecords, setYesterRecords] = useState([]);
   const [cows, setCows] = useState([]);
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -66,26 +67,31 @@ const MilkRecords = () => {
     try {
       setLoading(true);
 
-      const params = date
-        ? `?date=${dayjs(date).format("YYYY-MM-DD")}`
-        : "";
+      const todayStr = dayjs(date).format("YYYY-MM-DD");
+      const yesterdayStr = dayjs(date).subtract(1, "day").format("YYYY-MM-DD");
 
-      const res = await API(`production/milk-records/${params}`, "GET");
+      const [todayRes, yesterdayRes] = await Promise.all([
+        API(`production/milk-records/?date=${todayStr}`, "GET"),
+        API(`production/milk-records/?date=${yesterdayStr}`, "GET"),
+      ]);
 
-      const raw = res.data;
-      const recordsArray = Array.isArray(raw)
-        ? raw
-        : Array.isArray(raw?.data)
-          ? raw.data
-          : [];
+      const normalize = (res) =>
+        Array.isArray(res.data)
+          ? res.data
+          : Array.isArray(res.data?.data)
+            ? res.data.data
+            : [];
 
-      setRecords(recordsArray);
-    } catch {
+      setRecords(normalize(todayRes));
+      setYesterRecords(normalize(yesterdayRes));
+    } catch (e) {
       message.error("Failed to load milk records");
     } finally {
       setLoading(false);
     }
   };
+
+
 
 
   const fetchCows = async () => {
@@ -151,29 +157,52 @@ const MilkRecords = () => {
   const today = dayjs().format("YYYY-MM-DD");
   const yesterday = dayjs().subtract(1, "day").format("YYYY-MM-DD");
 
-  const aggregateByCow = (date) =>
-    records
-      .filter((r) => r.date === date)
-      .reduce((acc, r) => {
-        const cow = r.cow;
-        if (!acc[cow]) {
-          acc[cow] = {
-            cow,
-            cow_display: r.cow_display,
-            morning: 0,
-            afternoon: 0,
-            evening: 0,
-            total: 0,
-          };
-        }
+  // const aggregateByCow = (date) =>
+  //   records
+  //     .filter((r) => r.date === date)
+  //     .reduce((acc, r) => {
+  //       const cow = r.cow;
+  //       if (!acc[cow]) {
+  //         acc[cow] = {
+  //           cow,
+  //           cow_display: r.cow_display,
+  //           morning: 0,
+  //           afternoon: 0,
+  //           evening: 0,
+  //           total: 0,
+  //         };
+  //       }
 
-        acc[cow][r.session] += Number(r.quantity_in_liters);
-        acc[cow].total += Number(r.quantity_in_liters);
-        return acc;
-      }, {});
+  //       acc[cow][r.session] += Number(r.quantity_in_liters);
+  //       acc[cow].total += Number(r.quantity_in_liters);
+  //       return acc;
+  //     }, {});
+  const aggregateByCow = (data) =>
+    data.reduce((acc, r) => {
+      const cow = r.cow;
 
-  const todayMap = aggregateByCow(today);
-  const yesterdayMap = aggregateByCow(yesterday);
+      if (!acc[cow]) {
+        acc[cow] = {
+          cow,
+          cow_display: r.cow_display,
+          morning: 0,
+          afternoon: 0,
+          evening: 0,
+          total: 0,
+        };
+      }
+
+      acc[cow][r.session] += Number(r.quantity_in_liters || 0);
+      acc[cow].total += Number(r.quantity_in_liters || 0);
+
+      return acc;
+    }, {});
+
+
+
+  const todayMap = aggregateByCow(records);
+  const yesterdayMap = aggregateByCow(yesterrecords);
+
 
   const comparisonData = Object.values(todayMap).map((t) => {
     const y = yesterdayMap[t.cow] || {};
@@ -192,6 +221,7 @@ const MilkRecords = () => {
       totalDiff: diff(t.total, y.total),
     };
   });
+
 
   /* ----------------------------------
      Table columns (pivoted)
